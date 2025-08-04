@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"> 
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icons/favicon.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,19 +13,25 @@
 <body>
     <main>
         <div class="container" id="app">
+            <!-- Título -->
             <h1>Agenda de Eventos</h1>
-            <form id="eventForm" class="event-form">
-                <input type="text" id="eventName" placeholder="Nome do Evento" required maxlength="20">
-                <input type="date" id="eventDate" required>
-                <div style="display: flex; align-items: center;"><input type="checkbox" id="eventImportant" valor="true">
+            <!-- Formulário de Eventos -->
+            <form id="eventForm" class="event-form"> 
+                <input type="text" v-model="eventName" class="eventName" placeholder="Nome do Evento" required maxlength="20">
+                <input type="date" v-model="eventDate" class="eventDate" required>
+                <div style="display: flex; align-items: center;"><input type="checkbox" v-model="eventImportant" id="eventImportant" valor="true">
                     <label class="eventImportance" for="eventImportant">Importante</label>
                 </div>
-                <button id="eventButton" type="submit" @click="addEvent()" >Adicionar Evento</button>
+                <button v-model="eventButton" class="eventButton" type="submit" @click="addEvent()" >Adicionar Evento</button>
             </form>
+
+            <!-- Lista de Eventos -->
             <div class="event-list-container">
                 <div class="events-list" v-if="events.length === 0">
                     Nenhum evento agendado.
                 </div>
+
+            <!-- Exibe os eventos -->
             <div :class="['event-list', {'eventImportant-display': event.important }]" v-for="event in events" :key="event.name" >
                         {{ event.name }} <hr> {{ formatarData(event.date) }} <br> <div class="itens-event"> {{ event.important ? 'Importante' : 'Não Importante' }}
 
@@ -39,31 +45,37 @@
         const app = Vue.createApp({
             data() {
                 return {
-                    events: []
+                    events: [] //Cria um array vazio para armazenar os eventos
                 }
             },
             methods: {
-                addEvent() {
-                    const eventName = document.getElementById('eventName').value;
-                    const eventDate = document.getElementById('eventDate').value;
-                    const eventImportant = document.getElementById('eventImportant').checked;
-                    
-                    // Verifica se os campos estão preenchidos  
-                    if (eventName && eventDate) {
-                        this.events.push({ name: eventName, date: eventDate, important: eventImportant });
+                    addEvent() {
+                        // Verifica se os campos estão preenchidos
+                        if (this.eventName && this.eventDate) {
+                        this.events.push({
+                            name: this.eventName,
+                            date: this.eventDate,
+                            important: this.eventImportant
+                        });
+                        // Ordena os eventos por data
                         this.events.sort((a, b) => new Date(a.date) - new Date(b.date));
                         localStorage.setItem('eventosSalvos', JSON.stringify(this.events));
-                        document.getElementById('eventForm').reset();
-                        console.log(`Evento adicionado: ${eventName} em ${eventDate}`);
-                    } else {
-                        alert("Por favor, preencha todos os campos.");
+
+                        // Limpar campos
+                        this.eventName = '';
+                        this.eventDate = '';
+                        this.eventImportant = false;
+                        } else {
+                            // Exibe um alerta se os campos não estiverem preenchidos
+                        alert("Preencha todos os campos.");
                     } 
                 
                 },
-                        
+                // Formata a data para o formato brasileiro
                 formatarData(dataISO) {
                     return new Date(dataISO).toLocaleDateString('pt-BR');
                 },
+                // Remove um evento da lista
                 removerEvento(event) {
                     const index = this.events.indexOf(event);
                     if (index > -1) {
@@ -73,6 +85,7 @@
                     }
                 }
             },
+            // Carrega os eventos salvos do localStorage ao iniciar a aplicação
             mounted() {
                 const eventosSalvos = localStorage.getItem('eventosSalvos');
                 if (eventosSalvos) {
