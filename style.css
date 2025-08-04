@@ -12,6 +12,7 @@
 /* Global Styles */
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     font-family: 'Inter', sans-serif;
@@ -19,6 +20,31 @@ body {
     color: #2e466d;
     margin: 0;
     padding: 0;
+    height: auto;
+    min-height: 100vh;
+}
+main {
+    flex: 1;
+}
+.mensagem-sucesso {
+    position: absolute;
+    top: 20px;
+    background-color: #d1dffa; /* Green 100 */
+    color: #071636; /* Green 800 */
+    padding: 10px;
+    border: 1px solid #072e5c; /* Green 500 */
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-family: 'Lexend Deca', sans-serif;
+    text-align: center;
+    width: 250px;
+    box-shadow: 0px 0px 10px rgba(16, 145, 185, 0.5);
+    font-size: 14px;
+    animation: fadeInOut 3s ease-in-out;
+}
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; transform: translateY(-10px); }
+    10%, 90% { opacity: 1; transform: translateY(0); }
 }
 .event-form {
     display: flex;
@@ -31,13 +57,13 @@ body {
     justify-content: space-around;
     align-items: center;
 }
-#eventName{
+.eventName{
     font-family: lexend deca light;
     font-size: 15px;
     color: #041c4e;
     width: 200px;
 }
-#eventDate{
+.eventDate{
     font-family: lexend deca light;
 }
 .eventImportance{
@@ -45,7 +71,7 @@ body {
     font-family: lexend deca light;
     color: #041c4e;
 }
-#eventButton{
+.eventButton{
     background-color: #063497;
     color: white;
     border: none;
@@ -85,4 +111,12 @@ body {
 .eventImportant-display {
     background-color: #d82808; /* Amber 500 */
     color: #f5f4f3; /* Gray 800 */
+}
+footer {
+    background-color: #141c29; /* Dark Blue */
+    color: #f5f4f3; /* Light Gray */
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Lexend Deca', sans-serif;
 }

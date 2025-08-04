@@ -12,40 +12,112 @@
 </head>
 <body>
     <main>
-        <div class="container" id="app">
+        <div 
+            class="container" 
+            id="app">
+
+            <!-- Mensagem de sucesso -->
+            
             <!-- Título -->
-            <h1>Agenda de Eventos</h1>
+            <h1><p 
+                class="mensagem-sucesso" 
+                v-if="mensagemSucesso"> 
+                {{ mensagemSucesso }}
+            </p>
+            Agenda de Eventos </h1>
+            
             <!-- Formulário de Eventos -->
-            <form id="eventForm" class="event-form"> 
-                <input type="text" v-model="eventName" class="eventName" placeholder="Nome do Evento" required maxlength="20">
-                <input type="date" v-model="eventDate" class="eventDate" required>
-                <div style="display: flex; align-items: center;"><input type="checkbox" v-model="eventImportant" id="eventImportant" valor="true">
-                    <label class="eventImportance" for="eventImportant">Importante</label>
+            <form 
+                id="eventForm" 
+                class="event-form"> 
+
+                <input 
+                    type="text" 
+                    v-model="eventName" 
+                    class="eventName" 
+                    placeholder="Nome do Evento" 
+                    required 
+                    maxlength="20">
+
+                <input 
+                    type="date" 
+                    v-model="eventDate" 
+                    class="eventDate" 
+                    required>
+
+                <div style="display: flex; align-items: center;">
+
+                    <input 
+                        type="checkbox" 
+                        v-model="eventImportant" 
+                        id="eventImportant">
+
+                    <label 
+                        class="eventImportance" 
+                        for="eventImportant">
+                        Importante
+                    </label>
+
                 </div>
-                <button v-model="eventButton" class="eventButton" type="submit" @click="addEvent()" >Adicionar Evento</button>
+
+                <button 
+                    v-model="eventButton" 
+                    class="eventButton" 
+                    type="submit" 
+                    @click="addEvent()" >
+                    Adicionar Evento
+                </button>
+
             </form>
 
             <!-- Lista de Eventos -->
             <div class="event-list-container">
-                <div class="events-list" v-if="events.length === 0">
+
+                <div 
+                    class="events-list" 
+                    v-if="events.length === 0">
                     Nenhum evento agendado.
                 </div>
 
             <!-- Exibe os eventos -->
-            <div :class="['event-list', {'eventImportant-display': event.important }]" v-for="event in events" :key="event.name" >
-                        {{ event.name }} <hr> {{ formatarData(event.date) }} <br> <div class="itens-event"> {{ event.important ? 'Importante' : 'Não Importante' }}
+            <div 
+                :class="['event-list', {'eventImportant-display': event.important }]" 
+                v-for="event in events" 
+                :key="event.name" >
 
-                        <img src="icons/trash.png" alt="Excluir Evento" class="delete-icon" @click="removerEvento(event)">
+                        {{ event.name }} 
+                        <hr>
+                        {{ formatarData(event.date) }} 
+                        <br> 
+                        <div 
+                            class="itens-event"> 
+                            {{ event.important ? 'Importante' : 'Não Importante' }}
+                            <img 
+                                src="icons/trash.png" 
+                                alt="Excluir Evento" 
+                                class="delete-icon" 
+                                @click="removerEvento(event)">
                         </div>
-        </div></div>
-    <footer>
 
+            </div>
+            </div>
+        </div>
+    </main>
+    <!-- Rodapé -->
+    <footer>
+        <h4>Agenda SmartG</h4>
+        <p>Desenvolvido por <i>SmartG - Soluções Inteligentes</i> &copy; 2025</p>
     </footer>
+
     <script>
         const app = Vue.createApp({
             data() {
                 return {
-                    events: [] //Cria um array vazio para armazenar os eventos
+                    events: [], //Cria um array vazio para armazenar os eventos
+                    eventName: '',
+                    eventDate: '',
+                    eventImportant: false,
+                    mensagemSucesso: ''
                 }
             },
             methods: {
@@ -65,8 +137,15 @@
                         this.eventName = '';
                         this.eventDate = '';
                         this.eventImportant = false;
+                        console.log(`Evento adicionado: ${this.eventName} em ${this.eventDate}`);
+                        // Exibe um alerta de sucesso   
+                        this.mensagemSucesso = '✅ Evento criado com sucesso!';
+                        setTimeout(() => {
+                            this.mensagemSucesso = '';
+                        }, 3000);
+
                         } else {
-                            // Exibe um alerta se os campos não estiverem preenchidos
+                        // Exibe um alerta se os campos não estiverem preenchidos
                         alert("Preencha todos os campos.");
                     } 
                 
